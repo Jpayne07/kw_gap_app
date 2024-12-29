@@ -56,7 +56,7 @@ class User(db.Model, SerializerMixin):
 
     
     #begin serializing
-    serialize_rules = ('-projects', '-_password_hash')
+    serialize_rules = ('-projects', '-_password_hash','-collaborations.user')
 
 class Project(db.Model, SerializerMixin):
     __tablename__ = 'projects'
@@ -78,7 +78,11 @@ class ProjectCollaborators(db.Model, SerializerMixin):
 
     user = db.relationship('User', back_populates = 'collaborations')
     projects = db.relationship('Project', back_populates = 'collaborators')
-    serialize_rules = ('-projects', '-user.collaborations', 'user')
+    serialize_rules = ('-projects','-user')
+    __table_args__ = (
+        UniqueConstraint('user_id', 'project_id', name='uq_user_project'),
+    )
+
 
 class Keywords (db.Model, SerializerMixin):
     __tablename__ = 'keywords'

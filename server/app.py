@@ -48,6 +48,11 @@ class Users(Resource):
         users = [user.to_dict() for user in User.query.all()]
         response = make_response(users, 200)
         return response
+class UserItem(Resource):
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        response = make_response(user.to_dict(), 200)
+        return response
 class Projects(Resource):
     def get(self):
         projects = [project.to_dict() for project in Project.query.all()]
@@ -140,9 +145,24 @@ def allowed_file(filename):
 
 class ProjectCollaborator(Resource):
     def get(self):
-        collaborators = [{'id': collaborator.id,'username': collaborator.user.username,'project_id': collaborator.project_id, 'role': collaborator.role,  } for collaborator in ProjectCollaborators.query.all()]
+        collaborators = [collaborator.to_dict() for collaborator in ProjectCollaborators.query.all()]
         response = make_response(collaborators, 200)
         return response
+    
+    def post(self):
+        collaborator = request.get_json()
+        print(collaborator)
+        new_collaborator_object = ProjectCollaborators(
+            project_id = collaborator['project_id'],
+            role = collaborator['role'],
+            user_id = collaborator['user_id']
+        )
+        db.session.add(new_collaborator_object)
+        db.session.commit()
+        response = make_response(new_collaborator_object.to_dict(), 201)
+        print(response)
+        return (response)
+        
     
 class CheckSession(Resource):
     def get(self):
@@ -184,6 +204,7 @@ class Logout(Resource):
 api.add_resource(Home, '/')
 api.add_resource(Logout, '/logout')
 api.add_resource(Users, '/user')
+api.add_resource(UserItem, '/user/<int:id>')
 api.add_resource(Signup, '/signup')
 api.add_resource(Projects, '/projects')
 api.add_resource(ProjectItem, '/projects/<int:id>')

@@ -88,3 +88,12 @@ Table project_collaborators {
 
 Ref: project_collaborators.user_id > users.id // many-to-one
 Ref: project_collaborators.project_id > projects.id // many-to-one
+
+
+## Pages ##
+The app will have the following
+- Homepage
+- Signup page
+- Login page
+- Projects page
+- Project Page
