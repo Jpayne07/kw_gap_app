@@ -3,6 +3,8 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import UniqueConstraint
+
 
 from config import db, bcrypt
 
@@ -17,7 +19,7 @@ convention = {
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key = True)
-    username = db.Column(db.String, nullable = False, unique = True)
+    username = db.Column(db.String, nullable = False)
     _password_hash = db.Column(db.String) 
     name = db.Column(db.String, nullable = False)
     #begin relationships
@@ -29,7 +31,9 @@ class User(db.Model, SerializerMixin):
     keywords = association_proxy('projects', 'keywords',
             creator=lambda kw_obj: Project(keyword = kw_obj))
     
-
+    __table_args__ = (
+        UniqueConstraint('username', name='uq_user_username'),
+    )
     @hybrid_property
     def password_hash(self):
         raise AttributeError("password_hash is not accessible.")
@@ -50,9 +54,9 @@ class User(db.Model, SerializerMixin):
             raise AttributeError(f"{name} is not accessible.")
         return super().__getattr__(name)
 
-    pass
+    
     #begin serializing
-    serialize_rules =( '-collaborations','-projects')
+    serialize_rules = ('-projects', '-_password_hash')
 
 class Project(db.Model, SerializerMixin):
     __tablename__ = 'projects'
@@ -63,7 +67,7 @@ class Project(db.Model, SerializerMixin):
 
     collaborators = db.relationship('ProjectCollaborators', back_populates = 'projects')
     keywords = db.relationship('Keywords', back_populates = 'project')
-    serialize_rules =( '-collaborations','-keywords')
+    serialize_rules = ('-collaborations',)
 
 class ProjectCollaborators(db.Model, SerializerMixin):
     __tablename__ = 'project_collaborators'
@@ -74,7 +78,7 @@ class ProjectCollaborators(db.Model, SerializerMixin):
 
     user = db.relationship('User', back_populates = 'collaborations')
     projects = db.relationship('Project', back_populates = 'collaborators')
-    serialize_rules =( '-projects','-user')
+    serialize_rules = ('-projects', '-user.collaborations', 'user')
 
 class Keywords (db.Model, SerializerMixin):
     __tablename__ = 'keywords'

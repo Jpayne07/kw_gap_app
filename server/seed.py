@@ -21,13 +21,25 @@ if __name__ == '__main__':
         db.create_all()
 
         # Seed Users
-        user1 = User(username="john_doe", name="John Doe")
-        user2 = User(username="jane_smiths", name="Jane Smith")
-        user3 = User(username="alice_wonder", name="Alice Wonderland")
-
+        user1 = User(
+            username='johndoe',
+            name='John Doe',
+        )
+        user1.password_hash = '1'        
+        user2 = User(
+            username='janedoe',
+            name='Jane Doe',
+        )
+        user2.password_hash = '2'
+        user3 = User(
+                    username='j',
+                    name='Jane Doe',
+                )
+        user3.password_hash = 'c'
         db.session.add_all([user1, user2, user3])
         db.session.commit()
-
+        breakpoint()
+        user4 = User.query.filter_by(id=4).first()
         # Seed Projects
         project1 = Project(logo="logo1.png", brand_name="Awesome Brand")
         project2 = Project(logo="logo2.png", brand_name="Cool Startup")
@@ -38,8 +50,8 @@ if __name__ == '__main__':
 
         # Seed Project Collaborators (Many-to-Many)
         collab1 = ProjectCollaborators(user_id=user1.id, project_id=project1.id, role="Owner")
-        collab2 = ProjectCollaborators(user_id=user2.id, project_id=project1.id, role="Editor")
-        collab3 = ProjectCollaborators(user_id=user2.id, project_id=project2.id, role="Owner")
+        collab2 = ProjectCollaborators(user_id=user4.id, project_id=project1.id, role="Editor")
+        collab3 = ProjectCollaborators(user_id=user4.id, project_id=project2.id, role="Owner")
         collab4 = ProjectCollaborators(user_id=user3.id, project_id=project3.id, role="Viewer")
 
         db.session.add_all([collab1, collab2, collab3, collab4])
