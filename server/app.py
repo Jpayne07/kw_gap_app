@@ -18,6 +18,8 @@ from werkzeug.exceptions import UnprocessableEntity, Unauthorized
 from werkzeug.utils import secure_filename
 import os
 import csv
+from flask_migrate import Migrate
+
 
 # Local imports
 from config import app, db, api
@@ -29,7 +31,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'uploads'
-
+migrate = Migrate(app, db)
+db.init_app(app)
 # Views go here!
 class Home(Resource):
     def get(self):
