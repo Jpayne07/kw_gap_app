@@ -38,7 +38,6 @@ if __name__ == '__main__':
         user3.password_hash = 'c'
         db.session.add_all([user1, user2, user3])
         db.session.commit()
-        breakpoint()
         user4 = User.query.filter_by(id=4).first()
         # Seed Projects
         project1 = Project(logo="logo1.png", brand_name="Awesome Brand")
@@ -50,11 +49,9 @@ if __name__ == '__main__':
 
         # Seed Project Collaborators (Many-to-Many)
         collab1 = ProjectCollaborators(user_id=user1.id, project_id=project1.id, role="Owner")
-        collab2 = ProjectCollaborators(user_id=user4.id, project_id=project1.id, role="Editor")
-        collab3 = ProjectCollaborators(user_id=user4.id, project_id=project2.id, role="Owner")
         collab4 = ProjectCollaborators(user_id=user3.id, project_id=project3.id, role="Viewer")
 
-        db.session.add_all([collab1, collab2, collab3, collab4])
+        db.session.add_all([collab1, collab4])
         db.session.commit()
 
         # Seed Keywords (One-to-Many)

@@ -119,7 +119,8 @@ class FileUpload(Resource):
 
         if file.filename == '':
             return {"error": "No selected file"}, 400
-        
+        project_id = request.form.get('project_id')  # Get the project_id from the form
+
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -130,7 +131,7 @@ class FileUpload(Resource):
                 for row in csv_reader:
                     keyword = row[0]
                     search_volume = row[1]
-                    project_id = row[2]
+                    # project_id = row[2]
                     keyword_model = Keywords(keyword = keyword, volume = search_volume, project_id = project_id)
                 db.session.add(keyword_model)
                 db.session.commit()
