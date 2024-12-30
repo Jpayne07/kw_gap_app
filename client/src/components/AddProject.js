@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
-function HandleAddProject({ setUser }) {
+function AddProject({ setUser }) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
 
@@ -83,4 +83,4 @@ function HandleAddProject({ setUser }) {
   );
 }
 
-export default HandleAddProject;
+export default AddProject;

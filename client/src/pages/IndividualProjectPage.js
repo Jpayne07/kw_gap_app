@@ -3,6 +3,7 @@ import ProjectKeywords from "../components/ProjectKeywords";
 import AddKeywords from "../components/AddKeywords";
 import { useParams } from "react-router-dom";
 import HandleAddProject from "../components/AddProject";
+import ProjectComponent from "../components/ProjectComponent";
 
 function IndividualProjectPage(){
     const { id } = useParams();
@@ -49,9 +50,10 @@ function IndividualProjectPage(){
     return (
         <div>
             <h2 style={{ color: "blue" }}>{project.brand_name}</h2>
-            <ProjectKeywords keywords={project.keywords} />
+            {/* <ProjectKeywords keywords={project.keywords} />
             <AddKeywords />
-            <HandleAddProject />
+            <HandleAddProject /> */}
+            <ProjectComponent projectID={id} project = {project}/>
         </div>
     );
 }

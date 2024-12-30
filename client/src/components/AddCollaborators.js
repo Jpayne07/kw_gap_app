@@ -9,8 +9,9 @@ function AddCollaborators({projectCollaborators, id, users}) {
   const handleSubmit = async () => {
     try {
       const existingIds = projectCollaborators.map(collab => collab.user_id);
+      console.log(users)
       const handleOptions = users.filter(collaborator => !existingIds.includes(collaborator.id));
-
+      
       setUsernameFilter(handleOptions);
       setShowOptions(true);
     } catch (error) {
