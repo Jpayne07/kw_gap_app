@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 //found in projectComponents
-function FileUpload() {
+function FileUpload({ keywords, setProjectKeywords, projectID }) {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
-
+  const [isUploading, setIsUploading] = useState(false); // Track upload status
   // Handle file selection
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -16,11 +16,27 @@ function FileUpload() {
       return;
     }
 
+    if (isUploading) {
+      setMessage("File is already uploading...");
+      return;
+    }
+
     // Create a FormData object to send the file
     const formData = new FormData();
     formData.append("file", file);
+    if (projectID) {
+      console.log('test');
+      formData.append("project_id", projectID);
+      
+      // Log the formData contents using forEach
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
+    }
+    // Set uploading state to true
+    setIsUploading(true);
 
-    // Send the file to the Flask backend using fetch
+    // Send the file to the backend using fetch
     fetch("/keyword_upload", {
       method: "POST",
       body: formData,
@@ -30,18 +46,22 @@ function FileUpload() {
         if (data.error) {
           setMessage(`Error: ${data.error}`);
         } else {
+          setProjectKeywords([...keywords, data.keyword]);
           setMessage("File uploaded successfully!");
         }
       })
       .catch((error) => {
         console.error("Error:", error);
         setMessage("An error occurred during file upload.");
+      })
+      .finally(() => {
+        setIsUploading(false); // Reset uploading state when done
       });
   };
 
   return (
     <div>
-      <h1>Upload CSV</h1>
+      <h1>Add Keywords</h1>
 
       {/* File Input */}
       <input
@@ -49,10 +69,13 @@ function FileUpload() {
         id="fileInput"
         accept=".csv"
         onChange={handleFileChange}
+        disabled={isUploading} // Disable input during upload
       />
 
       {/* Upload Button */}
-      <button onClick={handleFileUpload}>Upload CSV</button>
+      <button onClick={handleFileUpload} disabled={isUploading}>
+        {isUploading ? "Uploading..." : "Upload CSV"}
+      </button>
 
       {/* Message */}
       <div id="message">{message}</div>

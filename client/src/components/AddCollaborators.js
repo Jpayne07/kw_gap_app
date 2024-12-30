@@ -99,6 +99,7 @@ function AddCollaborators({projectCollaborators, id, users}) {
 
   return (
     <div>
+      <h1>Add Collaborators</h1>
       <button onClick={handleSubmit}>Add Collaborators</button>
       {showOptions && <RenderOptions />}
     </div>

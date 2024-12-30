@@ -60,7 +60,7 @@ function SignupForm(){
             <Field type="password" name="password" />
             <ErrorMessage name="password" component="div" />
             <br></br>
-
+            <br></br>
             <button type="submit" disabled={isSubmitting}>
               Submit
             </button>
