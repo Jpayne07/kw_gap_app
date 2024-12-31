@@ -1,2 +1,2 @@
 web: gunicorn server.app:app -b 0.0.0.0:$PORT 
-frontend: npm run build && serve -s client/build
+frontend: cd client && npm run build && serve -s build 
