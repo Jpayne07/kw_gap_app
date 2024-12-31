@@ -8,9 +8,9 @@ from werkzeug.utils import secure_filename
 import os
 import csv
 from flask_migrate import Migrate
-from config import app, db, api
+from .config import app, db, api
 # Add your model imports
-from models import User, Project, ProjectCollaborators, Keywords
+from .models import User, Project, ProjectCollaborators, Keywords
 from dotenv import load_dotenv
 load_dotenv()
 # app = Flask(__name__)
@@ -217,5 +217,6 @@ api.add_resource(ProjectCollaborator, '/project_collaborators')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Use the port defined by Render
+    app.run(host='0.0.0.0', port=port)
 

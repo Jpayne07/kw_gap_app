@@ -6,7 +6,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import UniqueConstraint
 
 
-from config import db, bcrypt
+from .config import db, bcrypt
 
 convention = {
     "ix": "ix_%(column_0_label)s",
