@@ -8,9 +8,9 @@ from werkzeug.utils import secure_filename
 import os
 import csv
 from flask_migrate import Migrate
-from .config import app, db, api
+from config import app, db, api
 # Add your model imports
-from .models import User, Project, ProjectCollaborators, Keywords
+from models import User, Project, ProjectCollaborators, Keywords
 from dotenv import load_dotenv
 load_dotenv()
 # app = Flask(__name__)
