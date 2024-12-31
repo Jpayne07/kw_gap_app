@@ -12,6 +12,8 @@ from config import app, db, api
 # Add your model imports
 from models import User, Project, ProjectCollaborators, Keywords
 from dotenv import load_dotenv
+from flask import send_from_directory
+
 load_dotenv()
 # app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
@@ -23,6 +25,22 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 # migrate = Migrate(app, db)
 # db.init_app(app)
 # Views go here!
+
+class ReactAppResource(Resource):
+    def get(self, path=""):
+        """
+        Serve React static files or index.html for React routes.
+        """
+        static_folder = app.static_folder  # Ensure this is set up
+        if path and os.path.exists(os.path.join(static_folder, path)):
+            return send_from_directory(static_folder, path)
+        return send_from_directory(static_folder, "index.html")
+
+
+# Register the resource with Flask-RESTful API
+api.add_resource(ReactAppResource, "/", "/<path:path>")
+
+
 class Home(Resource):
     def get(self):
         return 'Hello, please navigate to a route to see more info', 200
