@@ -25,14 +25,14 @@ from flask_migrate import Migrate
 from config import app, db, api
 # Add your model imports
 from models import User, Project, ProjectCollaborators, Keywords
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'uploads'
-migrate = Migrate(app, db)
-db.init_app(app)
+# migrate = Migrate(app, db)
+# db.init_app(app)
 # Views go here!
 class Home(Resource):
     def get(self):
