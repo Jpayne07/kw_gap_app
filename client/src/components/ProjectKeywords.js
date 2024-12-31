@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 
 //found in projectComponents
 function ProjectKeywords({keywords, setProjectKeywords}){

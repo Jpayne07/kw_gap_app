@@ -1,6 +1,5 @@
-import React, { useState, useEffect, Route}  from "react";
+import React, { useState, useEffect}  from "react";
 import Login from "./Login";
-import Nav from '../components/Nav'
 import { useNavigate } from 'react-router-dom';
 import ProjectComponent from "./ProjectAggregate";
 
@@ -19,7 +18,7 @@ function Home(){
             navigate('/login')
         }
       });
-    }, []);
+    }, [navigate]);
   
     if (!user) return <Login setUser={setUser} />;
   
